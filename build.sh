@@ -17,4 +17,4 @@ javac  *.java
 
 # Run the program with the test file
 echo "Running test..."
-java Main input.txt
+java Main test/example.c
