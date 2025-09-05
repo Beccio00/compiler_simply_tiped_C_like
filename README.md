@@ -2,31 +2,6 @@
 
 This is a simple compiler for a C-like language built using JFlex and CUP.
 
-## Project Structure
-
-```
-compiler_simply_tiped_C_like/
-├── src/
-│   ├── compiler/
-│   │   └── Main.java        # Main class that orchestrates the compilation process
-│   ├── lexer/
-│   │   └── Lexer.flex       # Lexical analyzer specification
-│   └── parser/
-│       ├── Parser.cup       # Parser specification
-│       └── sym.java         # Symbol constants
-├── test/
-│   └── example.c            # Test input file
-├── build.sh                 # Build script
-└── README.md                # This file
-```
-
-## Features
-
-Currently, the compiler can recognize simple variable declarations like:
-
-```
-int a = 3 + 4;
-```
 
 ## Requirements
 
