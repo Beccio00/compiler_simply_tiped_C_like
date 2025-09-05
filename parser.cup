@@ -1,0 +1,85 @@
+import java_cup.runtime.*;
+import java.util.*;
+import java.io.*;
+
+init with {:
+	table = new HashMap<String, HashMap<String, Double>>();
+:};
+
+parser code {:
+	public HashMap<String, HashMap<String, Double>> table;
+	
+    public void syntax_error(Symbol current_symbol) {
+        StringBuffer m = new StringBuffer("Error");
+
+        if(current_symbol.left != -1) {
+            m.append(" in line " + (current_symbol.left + 1));
+            m.append(" in column " + (current_symbol.right + 1));
+        }
+        m.append(", symbol: " + current_symbol);
+        m.append(": Syntax Error");
+
+        System.err.println(m);
+    }
+	
+	public void report_error(String message, Object info) {
+        StringBuffer m = new StringBuffer(message);
+        if(info instanceof Symbol) {
+            if(((Symbol)info).left != 1 && ((Symbol)info).right != 1) {
+                if(((Symbol)info).left != -1 && ((Symbol)info).right != -1) {
+                    int line = (((Symbol)info).left) + 1;
+                    int column = (((Symbol)info).right) + 1;
+                    m.append(" (line " + line + " column " + column + ")");
+                }
+            }
+            System.err.println(m);
+        }
+    }
+
+    public Object stack(int position) {
+        return (((Symbol) stack.elementAt(tos + position)).value);
+    }
+:};
+
+action code {:
+
+:};
+/* Terminals (tokens returned by the scanner) */
+terminal            INT, PLUS, MINUS, MULT, DIV, ASSIGN, SEMI, LPAREN, RPAREN, UMINUS;
+terminal String     ID;
+terminal Integer    INT_LITERAL;
+
+/* Non-terminals */
+non terminal        program, statement;
+non terminal Integer expression;
+
+/* Precedences */
+precedence left PLUS, MINUS;
+precedence left MULT, DIV;
+precedence right UMINUS;
+
+/* Grammar rules */
+program ::= statement:s
+            {: System.out.println("Program parsed successfully!"); :}
+          ;
+
+statement ::= INT ID:id ASSIGN expression:e SEMI
+              {: System.out.println("Variable declaration: " + id + " = " + e); :}
+            ;
+
+expression ::= INT_LITERAL:n
+               {: RESULT = n; :}
+             | expression:e1 PLUS expression:e2
+               {: RESULT = e1 + e2; :}
+             | expression:e1 MINUS expression:e2
+               {: RESULT = e1 - e2; :}
+             | expression:e1 MULT expression:e2
+               {: RESULT = e1 * e2; :}
+             | expression:e1 DIV expression:e2
+               {: RESULT = e1 / e2; :}
+             | MINUS expression:e
+               {: RESULT = -e; :}
+               %prec UMINUS
+             | LPAREN expression:e RPAREN
+               {: RESULT = e; :}
+             ;
