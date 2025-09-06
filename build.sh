@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Navigate to project root
-cd "$(dirname "$0")"
+cd "$(dirname "$0")"/src
 
 # Generate lexer
 echo "Generating lexer..."
@@ -17,4 +17,6 @@ javac  *.java
 
 # Run the program with the test file
 echo "Running test..."
-java Main test/example.c
+
+java Main ../test/example.c
+cd ..
