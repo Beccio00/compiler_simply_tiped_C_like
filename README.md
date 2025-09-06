@@ -49,7 +49,3 @@ To extend this compiler with more features:
 2. Add new grammar rules to Parser.cup
 3. Update sym.java with any new terminal symbols
 4. Rebuild using the build script
-
-## License
-
-This project is open-source and available for educational purposes.
